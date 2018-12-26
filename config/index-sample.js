@@ -15,9 +15,9 @@ const config = {
 		case_sensitive_routing: true,
         
         public_path: 'public_path',
-        active_theme: 'basetheme'
+        backend_theme: 'basetheme',
+        frontend_theme: 'frontend_theme'
     },
-
     staging: {
         app_port: 'app_port',
         mongohost: 'mongohost',
@@ -34,9 +34,9 @@ const config = {
         case_sensitive_routing: 'case_sensitive_routing',
         
         public_path: 'public_path',
-        active_theme: 'active_theme'
+        backend_theme: 'active_theme',
+        frontend_theme: 'frontend_theme'
     },
-
     production: {
         app_port: 'app_port',
         mongohost: 'mongohost',
@@ -53,8 +53,9 @@ const config = {
         case_sensitive_routing: 'case_sensitive_routing',
         
         public_path: 'public_path',
-        active_theme: 'active_theme'
+        backend_theme: 'active_theme',
+        frontend_theme: 'frontend_theme'
     }
 }
 
-module.exports = config;
+export default config;

@@ -19,9 +19,6 @@ import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import webpackConfig from './webpack.config.js';
 
-import core from './modules/core';
-import user from './modules/user';
-
 const insulinApp = express();
 const currentEnv = process.env.NODE_ENV;
 
@@ -92,12 +89,22 @@ insulinApp.use(function(req, res, next){
   req.session.messages = [];
 });
 
-// load controllers
-// require('./core/boot')(insulinApp, { verbose: !module.parent })
-
+/* -- old school method --*/
+// load modules
+// import core from './modules/core';
+// import user from './modules/user';
 // load routes
-insulinApp.use(core.routes);
-insulinApp.use(user.routes);
+// insulinApp.use(core.routes);
+// insulinApp.use(user.routes);
+
+// load controllers
+// require('./modules/moduleFactory')(insulinApp, { verbose: !module.parent });
+import moduleFactory from './modules/moduleFactory.js';
+const ModuleFactoryClass = moduleFactory(insulinApp, { verbose: !module.parent });
+const allMOdules = new ModuleFactoryClass();
+
+
+
 
 // catch 404 and forward to error handler
 insulinApp.use(function(req, res, next) {

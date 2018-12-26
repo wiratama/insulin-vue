@@ -13,6 +13,7 @@ import chalk from 'chalk';
 import logger from 'morgan';
 import mongoose from 'mongoose';
 import config from './config';
+import core from './modules/core';
 import hbs from 'express-handlebars';
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
@@ -36,7 +37,7 @@ const currentEnv = process.env.NODE_ENV;
 // view engine setup
 insulinApp.engine('hbs', hbs({
   extname: 'hbs',
-  defaultLayout: 'mainlayout',
+  defaultLayout: 'testlayout', // 'mainlayout',
   layoutsDir: __dirname + '/themes/'+config[currentEnv].backend_theme+'/layouts/',
 }));
 insulinApp.set('views', path.join(__dirname, './themes/'+config[currentEnv].backend_theme));
@@ -87,6 +88,9 @@ insulinApp.use(function(req, res, next){
 
 // load controllers
 // require('./core/boot')(insulinApp, { verbose: !module.parent })
+
+// load routes
+insulinApp.use(core.routes);
 
 // catch 404 and forward to error handler
 insulinApp.use(function(req, res, next) {

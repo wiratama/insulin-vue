@@ -13,12 +13,14 @@ import chalk from 'chalk';
 import logger from 'morgan';
 import mongoose from 'mongoose';
 import config from './config';
-import core from './modules/core';
 import hbs from 'express-handlebars';
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import webpackConfig from './webpack.config.js';
+
+import core from './modules/core';
+import user from './modules/user';
 
 const insulinApp = express();
 const currentEnv = process.env.NODE_ENV;
@@ -71,6 +73,10 @@ insulinApp.use(session({
 insulinApp.use(lusca.xframe(config[currentEnv].xframe_option));
 insulinApp.use(lusca.xssProtection(config[currentEnv].xss_protection));
 
+// disable x-powered-by
+insulinApp.set('x-powered-by', false);
+insulinApp.set('case sensitive routing', true);
+
 // parse request bodies (req.body)
 insulinApp.use(express.urlencoded({ extended: true }));
 
@@ -91,6 +97,7 @@ insulinApp.use(function(req, res, next){
 
 // load routes
 insulinApp.use(core.routes);
+insulinApp.use(user.routes);
 
 // catch 404 and forward to error handler
 insulinApp.use(function(req, res, next) {

@@ -89,14 +89,6 @@ insulinApp.use(function(req, res, next){
   req.session.messages = [];
 });
 
-/* -- old school method --*/
-// load modules
-// import core from './modules/core';
-// import user from './modules/user';
-// load routes
-// insulinApp.use(core.routes);
-// insulinApp.use(user.routes);
-
 // load controllers
 // require('./modules/moduleFactory')(insulinApp, { verbose: !module.parent });
 import moduleFactory from './modules/moduleFactory.js';

@@ -2,14 +2,12 @@ import 'babel-polyfill';
 import path from 'path';
 import express from 'express';
 import bodyParser from 'body-parser';
-import http from 'http';
 import createError from 'http-errors';
 import session from 'express-session';
 import methodOverride from 'method-override';
 import cookieParser from 'cookie-parser';
 import lusca from 'lusca';
 import responseTime from 'response-time';
-import chalk from 'chalk';
 import logger from 'morgan';
 import mongoose from 'mongoose';
 import config from './config';
@@ -17,66 +15,18 @@ import hbs from 'express-handlebars';
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
-import webpackConfig from './webpack.config.js';
 
 const insulinApp = express();
 const currentEnv = process.env.NODE_ENV;
 
-const normalizePort = (val) => {
-  let port = parseInt(val, 10);
-
-  if (isNaN(port)) {
-    return val;
-  }
-
-  if (port >= 0) {
-    return port;
-  }
-
-  return false;
-}
-
-const onError = (error) => {
-  if (error.syscall !== 'listen') {
-    throw error;
-  }
-
-  let bind = typeof port === 'string'
-  ? 'Pipe ' + port
-  : 'Port ' + port;
-
-  switch (error.code) {
-  case 'EACCES':
-    console.error(bind + ' requires elevated privileges');
-    process.exit(1);
-    break;
-  case 'EADDRINUSE':
-    console.error(bind + ' is already in use');
-    process.exit(1);
-    break;
-  default:
-    throw error;
-  }
-}
-
-const onListening = () => {
-  let addr = appServer.address();
-  let bind = typeof addr === 'string'
-  ? 'pipe ' + addr
-  : 'port ' + addr.port;
-  console.log(chalk.bgBlue('Listening on ' + bind));
-}
-
-// dataConfig = config[currentEnv];
-// console.log(dataConfig.backend_theme);
-
 // webpack config
-// const webpackCompilerConfig = webpack(webpackConfig)
-// insulinApp.use(webpackDevMiddleware(webpackCompilerConfig, {
-//   publicPath: webpackConfig.output.publicPath,
-//   stats: { colors: true }
-// }));
-// insulinApp.use(webpackHotMiddleware(webpackCompilerConfig));
+import webpackConfig from './themes/basetheme/webpack.config.js';
+const webpackCompilerConfig = webpack(webpackConfig)
+insulinApp.use(webpackDevMiddleware(webpackCompilerConfig, {
+  publicPath: webpackConfig.output.publicPath,
+  stats: { colors: true }
+}));
+insulinApp.use(webpackHotMiddleware(webpackCompilerConfig));
 
 // view engine setup
 insulinApp.engine('hbs', hbs({
@@ -153,9 +103,4 @@ insulinApp.use(function(err, req, res, next) {
   res.render(path.join(__dirname, './themes/'+config[currentEnv].backend_theme+'/views/errors/error'), {layout: 'errorlayout'});
 });
 
-// create server
-const appServer = http.createServer(insulinApp);
-appServer.listen(normalizePort(config[currentEnv].app_port));
-appServer.on('error', onError);
-appServer.on('listening', onListening);
-console.log('Express started on port '+config[currentEnv].app_port);
+export default insulinApp;

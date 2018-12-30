@@ -6,8 +6,9 @@ const uglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const optimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const webpackShellPlugin = require('webpack-shell-plugin')
 
-const _clientAssets = 'resources/assets'
-const _publicAssets = 'public/assets'
+const _clientAssets = 'assets'
+const _publicAssets = '../../public/themes/basetheme/assets'
+console.log(_clientAssets);
 
 const isDevelopment = () => process.env.NODE_ENV === 'development'
 const isProduction = () => process.env.NODE_ENV === 'production'
@@ -15,7 +16,7 @@ const isProduction = () => process.env.NODE_ENV === 'production'
 module.exports = {
 	mode: 'development',
 	entry: {
-		app: './'+_clientAssets+'/vue/taskapp.js',
+		app: path.resolve(__dirname, 'assets/vue/taskapp.js'),
 		vendor: ['vue', 'axios', 'vue-router', 'vuex', 'vuex-router-sync', 'vuex-persistedstate'],
 	},
 	output: {

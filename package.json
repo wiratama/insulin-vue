@@ -2,14 +2,14 @@
   "name": "insulin-vue",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "present.js",
   "scripts": {
     "client:devserver": "webpack-dev-server --inline --hot",
-    "client:build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
+    "client:build": "cross-env NODE_ENV=production FORCE_COLOR=1 webpack --progress --hide-modules",
     "client:pre-build": "webpack --progress --hide-modules --hot --watch --config webpack.config.js",
     "clean:assets": "rimraf public/assets/css && rimraf public/assets/js",
-    "express:dev": "cross-env NODE_ENV=development nodemon server.js",
-    "express:prod": "cross-env NODE_ENV=production nodemon server.js",
+    "express:dev": "cross-env NODE_ENV=development FORCE_COLOR=1 nodemon present.js",
+    "express:prod": "cross-env NODE_ENV=production FORCE_COLOR=1 nodemon present.js",
     "full:dev": "npm-run-all --sequential clean:assets client:pre-build",
     "full:prod": "npm-run-all --parallel clean:assets client:build express:prod"
   },
@@ -55,8 +55,7 @@
     "passport-local": "^1.0.0",
     "power-assert": "^1.6.1",
     "response-time": "^2.3.2",
-    "rimraf": "^2.6.2",
-    "vue-native-websocket": "^2.0.12"
+    "rimraf": "^2.6.2"
   },
   "devDependencies": {
     "autoprefixer": "7.1.1",
@@ -108,6 +107,7 @@
     "uuid": "^3.0.1",
     "vee-validate": "^2.1.4",
     "vue": "^2.5.21",
+    "vue-auto-routing": "^0.3.0",
     "vue-form-generator": "2.0.0-beta1",
     "vue-html-loader": "1.2.4",
     "vue-loader": "^15.4.2",

@@ -5,4 +5,4 @@ import path from 'path';
 export const UserController = {};
 export default { UserController };
 
-UserController.landing = (req, res) => res.render('user/landing');
+UserController.landing = (req, res) => res.render('views/user/landing');

@@ -5,4 +5,4 @@ import path from 'path';
 export const CoreController = {};
 export default { CoreController };
 
-CoreController.landing = (req, res) => res.render('core/landing');
+CoreController.landing = (req, res) => res.render('views/core/landing');

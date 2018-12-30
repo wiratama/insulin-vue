@@ -22,6 +22,51 @@ import webpackConfig from './webpack.config.js';
 const insulinApp = express();
 const currentEnv = process.env.NODE_ENV;
 
+const normalizePort = (val) => {
+  let port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    return val;
+  }
+
+  if (port >= 0) {
+    return port;
+  }
+
+  return false;
+}
+
+const onError = (error) => {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  let bind = typeof port === 'string'
+  ? 'Pipe ' + port
+  : 'Port ' + port;
+
+  switch (error.code) {
+  case 'EACCES':
+    console.error(bind + ' requires elevated privileges');
+    process.exit(1);
+    break;
+  case 'EADDRINUSE':
+    console.error(bind + ' is already in use');
+    process.exit(1);
+    break;
+  default:
+    throw error;
+  }
+}
+
+const onListening = () => {
+  let addr = appServer.address();
+  let bind = typeof addr === 'string'
+  ? 'pipe ' + addr
+  : 'port ' + addr.port;
+  console.log(chalk.bgBlue('Listening on ' + bind));
+}
+
 // dataConfig = config[currentEnv];
 // console.log(dataConfig.backend_theme);
 
@@ -37,7 +82,7 @@ const currentEnv = process.env.NODE_ENV;
 insulinApp.engine('hbs', hbs({
   extname: 'hbs',
   defaultLayout: 'testlayout', // 'mainlayout',
-  layoutsDir: __dirname + '/themes/'+config[currentEnv].backend_theme+'/layouts/',
+  layoutsDir: __dirname + '/themes/'+config[currentEnv].backend_theme+'/views/layouts/',
 }));
 insulinApp.set('views', path.join(__dirname, './themes/'+config[currentEnv].backend_theme));
 insulinApp.set('view engine', 'hbs');
@@ -89,14 +134,10 @@ insulinApp.use(function(req, res, next){
   req.session.messages = [];
 });
 
-// load controllers
-// require('./modules/moduleFactory')(insulinApp, { verbose: !module.parent });
+// load modules
 import moduleFactory from './modules/moduleFactory.js';
 const ModuleFactoryClass = moduleFactory(insulinApp, { verbose: !module.parent });
 const allMOdules = new ModuleFactoryClass();
-
-
-
 
 // catch 404 and forward to error handler
 insulinApp.use(function(req, res, next) {
@@ -109,60 +150,12 @@ insulinApp.use(function(err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   res.status(err.status || 500);
-  res.render(path.join(__dirname, './themes/'+config[currentEnv].backend_theme+'/errors/error'), {layout: 'errorlayout'});
-})
+  res.render(path.join(__dirname, './themes/'+config[currentEnv].backend_theme+'/views/errors/error'), {layout: 'errorlayout'});
+});
 
-/* istanbul ignore next */
-const appServer = http.createServer(insulinApp);
 // create server
-// insulinApp.listen(normalizePort(config[currentEnv].app_port));
+const appServer = http.createServer(insulinApp);
 appServer.listen(normalizePort(config[currentEnv].app_port));
 appServer.on('error', onError);
 appServer.on('listening', onListening);
 console.log('Express started on port '+config[currentEnv].app_port);
-
-
-function normalizePort(val) {
-  let port = parseInt(val, 10);
-
-  if (isNaN(port)) {
-    return val;
-  }
-
-  if (port >= 0) {
-    return port;
-  }
-
-  return false;
-}
-
-function onError(error) {
-  if (error.syscall !== 'listen') {
-    throw error;
-  }
-
-  let bind = typeof port === 'string'
-  ? 'Pipe ' + port
-  : 'Port ' + port;
-
-  switch (error.code) {
-  case 'EACCES':
-    console.error(bind + ' requires elevated privileges');
-    process.exit(1);
-    break;
-  case 'EADDRINUSE':
-    console.error(bind + ' is already in use');
-    process.exit(1);
-    break;
-  default:
-    throw error;
-  }
-}
-
-function onListening() {
-  let addr = appServer.address();
-  let bind = typeof addr === 'string'
-  ? 'pipe ' + addr
-  : 'port ' + addr.port;
-  console.log(chalk.bgBlue('Listening on ' + bind));
-}

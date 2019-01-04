@@ -6,8 +6,8 @@ const uglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const optimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const webpackShellPlugin = require('webpack-shell-plugin')
 
-const _clientAssets = '../../themes/basetheme/assets'
-const _publicAssets = '../../public/themes/basetheme/assets'
+const _clientAssets = './themes/basetheme/assets'
+const _publicAssets = './public/themes/basetheme/assets'
 console.log(_clientAssets);
 
 const isDevelopment = () => process.env.NODE_ENV === 'development'

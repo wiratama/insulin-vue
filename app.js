@@ -103,4 +103,17 @@ insulinApp.use(function(err, req, res, next) {
   res.render(path.join(__dirname, './themes/'+config[currentEnv].backend_theme+'/views/errors/error'), {layout: 'errorlayout'});
 });
 
+// generate route map
+import fsextra from 'fs-extra';
+import { generateRoutes } from 'vue-route-generator'
+import chalk from 'chalk';
+
+if (!fsextra.existsSync(path.resolve(__dirname, './themes/'+config[currentEnv].backend_theme+'/assets/vue/generatedRoute.js'))) {
+  const generatedRoute = generateRoutes({
+      pages: path.resolve(__dirname, './themes/'+config[currentEnv].backend_theme+'/assets/vue/pages')
+  });
+  fsextra.writeFileSync(path.resolve(__dirname, './themes/'+config[currentEnv].backend_theme+'/assets/vue/generatedRoute.js'), generatedRoute)
+  console.log(chalk.bgMagenta('generatedRoute'));
+}
+
 export default insulinApp;

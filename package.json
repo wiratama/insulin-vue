@@ -55,7 +55,8 @@
     "passport-local": "^1.0.0",
     "power-assert": "^1.6.1",
     "response-time": "^2.3.2",
-    "rimraf": "^2.6.3"
+    "rimraf": "^2.6.3",
+    "vue-route-generator": "^0.3.3"
   },
   "devDependencies": {
     "autoprefixer": "7.1.1",

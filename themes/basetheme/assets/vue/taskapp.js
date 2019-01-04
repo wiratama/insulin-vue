@@ -1,7 +1,6 @@
 import Vue from 'vue';
-
-import App from './taskvue/component/rootComponentTaskApp.vue';
-import router from './taskvue/router/router.js';
+import App from './rootComponentTaskApp.vue';
+import router from './router.js';
 import '../css/taskapp/taskapp';
 
 document.addEventListener('DOMContentLoaded', () => {

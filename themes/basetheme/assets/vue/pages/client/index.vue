@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<h1>Detail Client</h1>
+		<h1>Client</h1>
 		<ul>
 			<li v-for="(client, index) of clients">
 			{{client.nama}}

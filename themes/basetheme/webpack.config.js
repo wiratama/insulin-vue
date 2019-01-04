@@ -5,13 +5,18 @@ const miniCssExtractPlugin = require('mini-css-extract-plugin')
 const uglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const optimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const webpackShellPlugin = require('webpack-shell-plugin')
+const VueAutoRoutingPlugin = require('vue-auto-routing/lib/webpack-plugin')
 
 const _clientAssets = '../../themes/basetheme/assets'
 const _publicAssets = '../../public/themes/basetheme/assets'
-console.log(_clientAssets);
 
 const isDevelopment = () => process.env.NODE_ENV === 'development'
 const isProduction = () => process.env.NODE_ENV === 'production'
+
+function resolve(dir) {
+	return path.join(__dirname, '..', dir);
+}
+console.log(resolve('./assets/vue/'));
 
 module.exports = {
 	mode: 'development',
@@ -32,6 +37,10 @@ module.exports = {
 			path.join(__dirname, 'node_modules'),
 		],
 		extensions: ['.js', '.sass', '.scss', '.vue'],
+		alias: {
+			vue$: 'vue/dist/vue.esm.js',
+			'@': resolve('./assets/vue/'),
+		},
 	},
 	optimization: {
 		splitChunks: {
@@ -150,7 +159,11 @@ module.exports = {
 		new webpackShellPlugin({
 			// onBuildStart:['echo "Webpack Start"'],
 			onBuildEnd:['npm run express:dev']
-		})
+		}),
+		new VueAutoRoutingPlugin({
+			pages: path.resolve(__dirname, _clientAssets+'/vue/taskvue/component/pages'),
+			importPrefix: '@/pages/'
+		  })
 	],
 	devServer: {
 		contentBase: path.join(__dirname, _publicAssets),

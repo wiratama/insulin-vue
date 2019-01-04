@@ -16,7 +16,6 @@ export default {
 		axios.get(`http://localhost:666/api/client`)
 		.then(response => {
 			this.clients = response.data
-			console.log(this.clients)
 		})
 		.catch(e => {
 			this.errors.push(e)

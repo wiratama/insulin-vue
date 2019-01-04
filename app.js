@@ -31,7 +31,7 @@ insulinApp.use(webpackHotMiddleware(webpackCompilerConfig));
 // view engine setup
 insulinApp.engine('hbs', hbs({
   extname: 'hbs',
-  defaultLayout: 'testlayout', // 'mainlayout',
+  defaultLayout: 'mainlayout', // 'testlayout', 'mainlayout',
   layoutsDir: __dirname + '/themes/'+config[currentEnv].backend_theme+'/views/layouts/',
 }));
 insulinApp.set('views', path.join(__dirname, './themes/'+config[currentEnv].backend_theme));

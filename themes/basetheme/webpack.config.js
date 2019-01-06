@@ -38,8 +38,8 @@ module.exports = {
 		],
 		extensions: ['.js', '.sass', '.scss', '.vue'],
 		alias: {
-			vue$: 'vue/dist/vue.esm.js',
-			'@': resolve('./assets/vue/'),
+			// vue$: 'vue/dist/vue.esm.js',
+			// '@': resolve('./assets/vue/'),
 		},
 	},
 	optimization: {
@@ -162,7 +162,7 @@ module.exports = {
 		}),
 		new VueAutoRoutingPlugin({
 			pages: path.resolve(__dirname, _clientAssets+'/vue/taskvue/component/pages'),
-			importPrefix: '@/pages/'
+			importPrefix: './pages/'
 		  })
 	],
 	devServer: {

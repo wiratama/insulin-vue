@@ -110,7 +110,8 @@ import chalk from 'chalk';
 
 if (!fsextra.existsSync(path.resolve(__dirname, './themes/'+config[currentEnv].backend_theme+'/assets/vue/generatedRoute.js'))) {
   const generatedRoute = generateRoutes({
-      pages: path.resolve(__dirname, './themes/'+config[currentEnv].backend_theme+'/assets/vue/pages')
+      pages: path.resolve(__dirname, './themes/'+config[currentEnv].backend_theme+'/assets/vue/pages'),
+      importPrefix: './pages/'
   });
   fsextra.writeFileSync(path.resolve(__dirname, './themes/'+config[currentEnv].backend_theme+'/assets/vue/generatedRoute.js'), generatedRoute)
   console.log(chalk.bgMagenta('generatedRoute'));

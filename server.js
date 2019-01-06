@@ -5,10 +5,9 @@ import config from './config';
 import insulinApp from './app';
 
 const currentEnv = process.env.NODE_ENV;
+const port = config[currentEnv].app_port;
 
 const normalizePort = (val) => {
-    let port = parseInt(val, 10);
-
     if (isNaN(port)) {
         return val;
     }

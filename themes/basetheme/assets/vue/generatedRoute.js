@@ -1,8 +1,8 @@
-const Index = () => import(/* webpackChunkName: "index" */ '@/pages/index.vue')
+const Index = () => import(/* webpackChunkName: "index" */ './pages/index.vue')
 const Client = () =>
-  import(/* webpackChunkName: "client" */ '@/pages/client.vue')
-const ClientIndex = () =>
-  import(/* webpackChunkName: "client-index" */ '@/pages/client/index.vue')
+  import(/* webpackChunkName: "client" */ './pages/client.vue')
+const ClientId = () =>
+  import(/* webpackChunkName: "client-id" */ './pages/client/id.vue')
 
 export default [
   {
@@ -11,13 +11,14 @@ export default [
     component: Index
   },
   {
+    name: 'client',
     path: '/client',
     component: Client,
     children: [
       {
-        name: 'client-index',
-        path: '',
-        component: ClientIndex
+        name: 'client-id',
+        path: 'id',
+        component: ClientId
       }
     ]
   }

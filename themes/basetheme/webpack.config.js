@@ -6,9 +6,10 @@ const uglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const optimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const webpackShellPlugin = require('webpack-shell-plugin')
 const VueAutoRoutingPlugin = require('vue-auto-routing/lib/webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
-const _clientAssets = '../../themes/basetheme/assets'
-const _publicAssets = '../../public/themes/basetheme/assets'
+const _clientAssets = '../../themes/basetheme/assets/'
+const _publicAssets = '../../public/themes/basetheme/assets/'
 
 const isDevelopment = () => process.env.NODE_ENV === 'development'
 const isProduction = () => process.env.NODE_ENV === 'production'
@@ -16,24 +17,26 @@ const isProduction = () => process.env.NODE_ENV === 'production'
 function resolve(dir) {
 	return path.join(__dirname, '..', dir);
 }
-console.log(resolve('./assets/vue/'));
+
+console.log(path.join(__dirname, './'+_publicAssets));
 
 module.exports = {
 	mode: 'development',
 	entry: {
-		app: path.resolve(__dirname, _clientAssets+'/vue/taskapp.js'),
+		app: path.join(__dirname, _clientAssets+'/vue/taskapp.js'),
 		vendor: ['vue', 'axios', 'vue-router', 'vuex', 'vuex-router-sync', 'vuex-persistedstate'],
 	},
 	output: {
-		path: path.resolve(__dirname, './'+_publicAssets),
-		filename: isProduction() ? 'js/[name].[hash].js' : 'js/[name].js',
-		chunkFilename: isProduction() ? 'js/[name].[hash].js' : 'js/[name].js',
-		publicPath: path.resolve(__dirname, './'+_publicAssets)
+		path: path.join(__dirname, './'+_publicAssets),
+		filename: isProduction() ? '[name].[hash].js' : '[name].js',
+		chunkFilename: isProduction() ? '[name].[hash].js' : '[name].js',
+		// publicPath: path.join(__dirname, './'+_publicAssets)
+		publicPath: '/dist/'
 	},
 	// externals: ['axios'],
 	resolve: {
 		modules: [
-			path.resolve(__dirname, _clientAssets),
+			path.join(__dirname, _clientAssets),
 			path.join(__dirname, 'node_modules'),
 		],
 		extensions: ['.js', '.sass', '.scss', '.vue'],
@@ -70,17 +73,25 @@ module.exports = {
 				test: /\.js$/,
 				use: ['babel-loader'],
 				include: [
-					path.resolve(__dirname, _clientAssets),
+					path.join(__dirname, _publicAssets),
 				],
 				exclude: /node_modules/,
+				// options: {
+				// 	plugins: ['syntax-dynamic-import'],
+				// 	presets: ["@babel/env"]
+				// },
 			},
-			 {
+			{
 				test: /\.json$/,
 				use: ['json-loader'],
 			},
 			{
 				test: /\.pug$/,
 				use: ['pug-loader'],
+			},
+			{
+				test: /\.hbs$/,
+				loader: 'handlebars-loader',
 			},
 			{
 				test: /\.(sass|scss)$/,
@@ -163,10 +174,15 @@ module.exports = {
 		new VueAutoRoutingPlugin({
 			pages: path.resolve(__dirname, _clientAssets+'/vue/taskvue/component/pages'),
 			importPrefix: './pages/'
-		  })
+		}),
+		// new HtmlWebpackPlugin({
+		// 	cache: false,
+		// 	title: 'Insulin App',
+		// 	template: path.resolve(__dirname, '../../themes/basetheme/views/layouts/mainlayout.hbs')
+		// })
 	],
 	devServer: {
-		contentBase: path.join(__dirname, _publicAssets),
+		contentBase: path.join(__dirname, './'+_publicAssets),
 		historyApiFallback: true,
 		noInfo: true,
 	},

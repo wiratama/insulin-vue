@@ -5,31 +5,47 @@ const miniCssExtractPlugin = require('mini-css-extract-plugin')
 const uglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const optimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const webpackShellPlugin = require('webpack-shell-plugin')
+const VueAutoRoutingPlugin = require('vue-auto-routing/lib/webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const _clientAssets = './themes/basetheme/assets'
 const _publicAssets = './public/themes/basetheme/assets'
-console.log(_clientAssets);
 
 const isDevelopment = () => process.env.NODE_ENV === 'development'
 const isProduction = () => process.env.NODE_ENV === 'production'
 
+const resolvePath = function(folderName) {
+	return path.resolve(__dirname, folderName);
+}
+
+const joinPath = function(folderName) {
+	return path.join(__dirname, folderName);
+}
+
+const setPublicPath = () => {
+	if (isProduction()) {
+		return 'https://your-host.com/production/';
+	} else {
+		return 'http://localhost:666/';
+	}
+}
+
 module.exports = {
-	mode: 'development',
+	mode: isProduction() ? 'production' : 'development',
 	entry: {
-		app: path.resolve(__dirname, _clientAssets+'/vue/taskapp.js'),
+		app: resolvePath(_clientAssets+'/vue/taskapp.js'),
 		vendor: ['vue', 'axios', 'vue-router', 'vuex', 'vuex-router-sync', 'vuex-persistedstate'],
 	},
 	output: {
-		path: path.resolve(__dirname, './'+_publicAssets),
+		path: joinPath(_publicAssets),
+		publicPath: setPublicPath()+'static/themes/basetheme/assets/',
 		filename: isProduction() ? 'js/[name].[hash].js' : 'js/[name].js',
 		chunkFilename: isProduction() ? 'js/[name].[hash].js' : 'js/[name].js',
-		publicPath: path.resolve(__dirname, './'+_publicAssets)
 	},
-	// externals: ['axios'],
 	resolve: {
 		modules: [
-			path.resolve(__dirname, _clientAssets),
-			path.join(__dirname, 'node_modules'),
+			resolvePath(_clientAssets),
+			joinPath('node_modules'),
 		],
 		extensions: ['.js', '.sass', '.scss', '.vue'],
 	},
@@ -61,7 +77,7 @@ module.exports = {
 				test: /\.js$/,
 				use: ['babel-loader'],
 				include: [
-					path.resolve(__dirname, _clientAssets),
+					joinPath(_publicAssets),
 				],
 				exclude: /node_modules/,
 			},
@@ -150,10 +166,14 @@ module.exports = {
 		new webpackShellPlugin({
 			// onBuildStart:['echo "Webpack Start"'],
 			onBuildEnd:['npm run express:dev']
-		})
+		}),
+		new VueAutoRoutingPlugin({
+			pages: resolvePath(_clientAssets+'/vue/taskvue/component/pages'),
+			importPrefix: './pages/'
+		}),
 	],
 	devServer: {
-		contentBase: path.join(__dirname, _publicAssets),
+		contentBase: joinPath(_publicAssets),
 		historyApiFallback: true,
 		noInfo: true,
 	},

@@ -4,14 +4,14 @@
   "description": "",
   "main": "present.js",
   "scripts": {
-    "client:devserver": "webpack-dev-server --inline --hot",
-    "client:build": "cross-env NODE_ENV=production FORCE_COLOR=1 webpack --progress --hide-modules",
-    "client:pre-build": "webpack --progress --hide-modules --hot --watch --config webpack.config.js",
+    "client:devserver": "cross-env NODE_ENV=developtment webpack-dev-server --inline --hot",
+    "client:build": "cross-env NODE_ENV=production FORCE_COLOR=1 webpack --progress --hide-modules --config webpack.config.js",
+    "client:pre-build": "cross-env NODE_ENV=developtment webpack --mode development --progress --hide-modules --hot --watch --config webpack.config.js",
     "clean:assets": "rimraf public/themes/basetheme/assets",
     "express:dev": "cross-env NODE_ENV=development FORCE_COLOR=1 nodemon present.js",
     "express:prod": "cross-env NODE_ENV=production FORCE_COLOR=1 nodemon present.js",
     "full:dev": "npm-run-all --sequential clean:assets client:pre-build",
-    "full:prod": "npm-run-all --parallel clean:assets client:build express:prod"
+    "full:prod": "npm-run-all --parallel clean:assets client:build"
   },
   "repository": {
     "type": "git",

@@ -5,6 +5,7 @@ const config = {
 		mongoport: 'mongoport',
 		mongousername: 'mongousername',
 		mongopassword: 'mongopassword',
+		mongocollection: 'mongopassword',
         
         session_secret: 'session_secret',
         http_only: true,
@@ -24,6 +25,7 @@ const config = {
 		mongoport: 'mongoport',
 		mongousername: 'mongousername',
         mongopassword: 'mongopassword',
+        mongocollection: 'mongopassword',
         
         session_secret: 'session_secret',
         http_only: 'http_only',
@@ -43,6 +45,7 @@ const config = {
 		mongoport: 'mongoport',
 		mongousername: 'mongousername',
         mongopassword: 'mongopassword',
+        mongocollection: 'mongocollection',
         
         session_secret: 'session_secret',
         http_only: 'http_only',

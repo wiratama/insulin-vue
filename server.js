@@ -30,11 +30,11 @@ const onError = (error) => {
 
     switch (error.code) {
     case 'EACCES':
-        console.error(chalk.red(bind + ' requires elevated privileges'));
+        console.error(chalk.bgRed(bind + ' requires elevated privileges'));
         process.exit(1);
         break;
     case 'EADDRINUSE':
-        console.error(chalk.red(bind + ' is already in use'));
+        console.error(chalk.bgRed(bind + ' is already in use'));
         process.exit(1);
         break;
     default:
@@ -47,7 +47,7 @@ const onListening = () => {
     let bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
-    console.log(chalk.green('Listening on ' + bind));
+    console.log(chalk.bgMagenta('Listening on ' + bind));
 }
 
 // create server
@@ -55,4 +55,4 @@ const appServer = http.createServer(insulinApp);
 appServer.listen(normalizePort(config[currentEnv].app_port));
 appServer.on('error', onError);
 appServer.on('listening', onListening);
-console.log(chalk.green('Express started on port '+config[currentEnv].app_port));
+console.log(chalk.bgMagenta('Express started on port '+config[currentEnv].app_port));

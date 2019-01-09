@@ -10,8 +10,11 @@ import lusca from 'lusca';
 import responseTime from 'response-time';
 import logger from 'morgan';
 import mongoose from 'mongoose';
-import config from './config';
 import hbs from 'express-handlebars';
+import cors from 'cors';
+import helmet from 'helmet';
+import compression from 'compression';
+import config from './config';
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
@@ -60,6 +63,11 @@ insulinApp.use(session({
   secret: config[currentEnv].session_secret,
   cookie: { secure: config[currentEnv].secure_cookie, maxAge: config[currentEnv].cookie_expires },
 }));
+
+// headers
+insulinApp.use(cors());
+insulinApp.use(helmet());
+insulinApp.use(compression());
 
 // prevent clickjacking and cross site scripting
 insulinApp.use(lusca.xframe(config[currentEnv].xframe_option));
@@ -116,5 +124,10 @@ if (!fsextra.existsSync(path.resolve(__dirname, './themes/'+config[currentEnv].b
   fsextra.writeFileSync(path.resolve(__dirname, './themes/'+config[currentEnv].backend_theme+'/assets/vue/generatedRoute.js'), generatedRoute)
   console.log(chalk.bgMagenta('generatedRoute'));
 }
+
+mongoose.connect('mongodb://'+config[currentEnv].mongohost+':'+config[currentEnv].mongoport+'/'+config[currentEnv].mongodatabase, (err, db) => {
+  if (err) throw err;
+  console.log(chalk.bgMagenta('Mongo successfully connected'));
+});
 
 export default insulinApp;

@@ -20,13 +20,13 @@ const insulinApp = express();
 const currentEnv = process.env.NODE_ENV;
 
 // webpack config
-import webpackConfig from './themes/basetheme/webpack.config.js';
-const webpackCompilerConfig = webpack(webpackConfig)
-insulinApp.use(webpackDevMiddleware(webpackCompilerConfig, {
-  publicPath: webpackConfig.output.publicPath,
-  stats: { colors: true }
-}));
-insulinApp.use(webpackHotMiddleware(webpackCompilerConfig));
+// import webpackConfig from './webpack.config.js';
+// const webpackCompilerConfig = webpack(webpackConfig)
+// insulinApp.use(webpackDevMiddleware(webpackCompilerConfig, {
+//   publicPath: webpackConfig.output.publicPath,
+//   stats: { colors: true }
+// }));
+// insulinApp.use(webpackHotMiddleware(webpackCompilerConfig));
 
 // view engine setup
 insulinApp.engine('hbs', hbs({

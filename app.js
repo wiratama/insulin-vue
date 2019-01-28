@@ -127,6 +127,7 @@ if (!fsextra.existsSync(path.resolve(__dirname, './themes/'+config[currentEnv].b
 
 mongoose.connect('mongodb://'+config[currentEnv].mongohost+':'+config[currentEnv].mongoport+'/'+config[currentEnv].mongodatabase, (err, db) => {
   if (err) throw err;
+  console.log(chalk.bgMagenta('Mongo config: '+'mongodb://'+config[currentEnv].mongohost+':'+config[currentEnv].mongoport+'/'+config[currentEnv].mongodatabase));
   console.log(chalk.bgMagenta('Mongo successfully connected'));
 });
 

@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/wiratama/insulin-vue#readme",
   "dependencies": {
+    "acl": "^0.4.11",
     "axios": "^0.17",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
@@ -57,6 +58,7 @@
     "power-assert": "^1.6.1",
     "response-time": "^2.3.2",
     "rimraf": "^2.6.3",
+    "validator": "^10.11.0",
     "vue-route-generator": "^0.3.3"
   },
   "devDependencies": {
